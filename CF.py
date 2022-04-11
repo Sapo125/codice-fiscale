@@ -1,5 +1,4 @@
 import PySimpleGUI as sg
-from numpy import empty
 
 giorno = tuple(range(1, 32))
 mese = []
@@ -16,8 +15,8 @@ with open('comuni.txt') as i:
 
 test = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
 lettera_controllo = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
-algo_pari = [1,0,5,7,9,13,15,17,19,21,1,0,5,7,9,13,15,17,19,21,2,4,18,20,11,3,6,8,12,14,16,10,22,25,24,23]
-algo_dispari = [0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,19,20,21,22,23,24,25]
+algo_dispari = [1,0,5,7,9,13,15,17,19,21,1,0,5,7,9,13,15,17,19,21,2,4,18,20,11,3,6,8,12,14,16,10,22,25,24,23]
+algo_pari = [0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]
 
 for riga in elenco_mesi:
         x = riga.split(' ')
@@ -25,9 +24,12 @@ for riga in elenco_mesi:
         lettera_mesi.append(x[0])
 
 def CF(dati):
+  try:
     incompleto = (nome_cognome(dati) + nascita(dati) + comune(dati)).lower()
     codice = (incompleto + controllo(incompleto)).upper()
-    return(codice)
+  except:
+    sg.Popup("Controlla i dati inseriti e riprova")
+  return(codice)
 
 def nome_cognome(dati):
     codice_c =''
@@ -98,18 +100,17 @@ def comune(dati):
     return(codice)
 
 def controllo(dati):
-    i = 0
-    c = 0
-    for x in dati:
-        if i%2 == 0:
-            c = c + algo_pari[test.index(x)]
-            print(algo_pari[test.index(x)])
-        else:
-            c = c + algo_dispari[test.index(x)]
-            print(algo_dispari[test.index(x)])
-        i += 1
-    codice = lettera_controllo[c%26]
-    return(codice)
+  i = 1
+  c = 0
+  for x in dati:
+      if i%2 == 0:
+          c = c + algo_pari[test.index(x)]
+      else:
+          c = c + algo_dispari[test.index(x)]
+				
+      i += 1
+  codice = lettera_controllo[c%26]
+  return(codice)
 
 def main():
 
